@@ -1,11 +1,23 @@
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { UploadedFile, UploadStatus } from './types';
 import DropZone from './components/DropZone';
 import FileList from './components/FileList';
 
 const App: React.FC = () => {
     const [files, setFiles] = useState<UploadedFile[]>([]);
+
+    useEffect(() => {
+        // This is a cleanup function that runs when the App component unmounts.
+        // It's important to revoke object URLs to avoid memory leaks.
+        return () => {
+            files.forEach(fileData => {
+                if (fileData.shareLink && fileData.shareLink.startsWith('blob:')) {
+                    URL.revokeObjectURL(fileData.shareLink);
+                }
+            });
+        };
+    }, [files]); // The dependency array includes 'files' to have the latest list on cleanup.
 
     const simulateUpload = (fileId: string) => {
         const interval = setInterval(() => {
@@ -21,8 +33,8 @@ const App: React.FC = () => {
                 const newProgress = currentFile.progress + Math.floor(Math.random() * 10) + 5;
 
                 if (newProgress >= 100) {
-                    const shortId = currentFile.id.replace('file-', '').substring(0, 8);
-                    const shareLink = `https://jujutsu.share/${shortId}`;
+                    // Create a local, temporary URL for the file
+                    const shareLink = URL.createObjectURL(currentFile.file);
                     newFiles[fileIndex] = { ...currentFile, progress: 100, status: UploadStatus.COMPLETE, shareLink };
                     clearInterval(interval);
                 } else {

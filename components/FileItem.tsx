@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { UploadedFile, UploadStatus } from '../types';
 import { formatBytes } from '../utils/formatBytes';
-import { FileIcon, CheckIcon } from './icons';
+import { FileIcon, CheckIcon, CopyIcon, ExternalLinkIcon } from './icons';
 
 interface FileItemProps {
     fileData: UploadedFile;
@@ -41,16 +41,32 @@ const FileItem: React.FC<FileItemProps> = ({ fileData }) => {
                                 className="flex-grow bg-transparent text-accent-cyan text-sm focus:outline-none min-w-0 p-2"
                                 aria-label="Shareable file link"
                             />
-                            <button 
-                                onClick={handleCopy} 
-                                className="ml-2 mr-1 my-1 px-3 py-1 bg-accent-purple/80 hover:bg-accent-purple rounded text-xs font-bold transition-colors uppercase tracking-wider"
-                                aria-label="Copy link"
+                            <a 
+                                href={fileData.shareLink} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="p-1.5 text-text-primary/80 hover:text-accent-cyan transition-colors"
+                                aria-label="Open file in new tab"
+                                title="Open file"
                             >
-                                {isCopied ? 'Copied' : 'Copy'}
-                            </button>
+                                <ExternalLinkIcon className="w-5 h-5" />
+                            </a>
+                            <div className="relative">
+                                <button 
+                                    onClick={handleCopy} 
+                                    className="p-1.5 text-text-primary/80 hover:text-accent-cyan transition-colors"
+                                    aria-label="Copy link"
+                                    title="Copy link"
+                                >
+                                    <CopyIcon className="w-5 h-5" />
+                                </button>
+                                <span className={`absolute -top-8 right-0 text-xs bg-accent-purple text-white px-2 py-0.5 rounded-md transition-all duration-300 ${isCopied ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                                    Copied!
+                                </span>
+                            </div>
                         </div>
                         <p className="text-xs opacity-60 mt-1.5 text-text-primary/60">
-                            Link expires in 24 hours.
+                            Link is temporary and only works on this device.
                         </p>
                     </div>
                 ) : (
