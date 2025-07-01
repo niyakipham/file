@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jujutsu Tech Uploader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+      /* Custom properties to be used with Tailwind's arbitrary value support */
+      :root {
+        --dark-bg: #0f0f23;
+        --text-primary: #e0e0ff;
+        --accent-cyan: #00D1F5;
+        --accent-purple: #B026FF;
+        --accent-purple-transparent: rgba(176, 38, 255, 0.1);
+        --border-color: rgba(0, 209, 245, 0.2);
+        --success-green: #25d489;
+      }
+      
+      /* Base body styling and background grid effect */
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--dark-bg);
+        position: relative;
+        overflow: hidden;
+      }
+
+      body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+            linear-gradient(rgba(0, 209, 245, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 209, 245, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: -1;
+        opacity: 0.5;
+      }
+
+      /* Custom animations that can't be done with Tailwind out-of-the-box */
+      @keyframes animate-border {
+          0% {
+              transform: translateX(0);
+          }
+          100% {
+              /* 800px max-width + 150px element width */
+              transform: translateX(calc(800px + 150px)); 
+          }
+      }
+      
+      @keyframes move-stripes {
+          from { background-position-x: 0; }
+          to { background-position-x: 20px; }
+      }
+      
+      @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes slideUp {
+          from { opacity: 0; transform: translateY(15px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Classes to apply animations */
+      .animate-border-top {
+        animation: animate-border 4s linear infinite;
+      }
+      .animate-border-bottom {
+        animation: animate-border 4s linear infinite reverse;
+      }
+      .animate-fade-in {
+        animation: fadeIn 1s ease-out;
+      }
+      .animate-slide-up {
+        animation: slideUp 0.5s ease-out;
+      }
+      .animate-move-stripes {
+        animation: move-stripes 1s linear infinite;
+      }
+
+      /* Custom background for progress bar */
+      .progress-bar-bg {
+        background: linear-gradient(
+            45deg,
+            var(--accent-cyan) 25%,
+            transparent 25%,
+            transparent 50%,
+            var(--accent-cyan) 50%,
+            var(--accent-cyan) 75%,
+            transparent 75%,
+            transparent
+        );
+        background-size: 20px 20px;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['Orbitron', 'sans-serif'],
+              body: ['Poppins', 'sans-serif'],
+            },
+            colors: {
+              'dark-bg': 'var(--dark-bg)',
+              'text-primary': 'var(--text-primary)',
+              'accent-cyan': 'var(--accent-cyan)',
+              'accent-purple': 'var(--accent-purple)',
+              'success-green': 'var(--success-green)',
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
